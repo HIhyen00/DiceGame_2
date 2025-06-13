@@ -1,6 +1,6 @@
-import account.entity.Account;
-import account.repository.AccountRepository;
-import account.repository.AccountRepositoryImpl;
+import account_hi.entity.Account;
+import account_hi.repository.AccountRepository;
+import account_hi.repository.AccountRepositoryImpl;
 import utility.KeyboardInput;
 
 import java.util.Scanner;
@@ -39,11 +39,11 @@ public class Main {
         }
     }
 
-    public class Mypage() {
-        System.out.println("1. 로그인");
-        System.out.println("2. 배틀 레포트 조회");
-        System.out.println("0. 종료");
-    }
+//    public class Mypage() {
+//        System.out.println("1. 로그인");
+//        System.out.println("2. 배틀 레포트 조회");
+//        System.out.println("0. 종료");
+//    }
 
     public class GamePage() {
         // game page
