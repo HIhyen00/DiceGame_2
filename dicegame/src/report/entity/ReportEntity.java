@@ -1,7 +1,7 @@
 package report.entity;
 
 public class ReportEntity {
-    private long playerId;              // Player ID
+    private User user;                  // User 객체 활용
     private long gameId;                // 어떤 Player와 어떤 Player가 겨뤘는지 확인할 수 있는 id
     private long gameRoundNum;          // 게임 라운드 숫자
     private int dice1;                  // 1번 주사위 숫자
@@ -15,8 +15,8 @@ public class ReportEntity {
     private long loseCount;             // 패배 수
     private GameResult result;          // 게임 결과
 
-    public ReportEntity(long playerId, long gameId, long gameRoundNum, int dice1, int dice2, int skillDice, int diceResultNum, boolean usedSkill, String skillEffect, long totalBattleCount, long winCount, long loseCount, GameResult result) {
-        this.playerId = playerId;
+    public ReportEntity(User user, long gameId, long gameRoundNum, int dice1, int dice2, int skillDice, int diceResultNum, boolean usedSkill, String skillEffect, long totalBattleCount, long winCount, long loseCount, GameResult result) {
+        this.user = user;
         this.gameId = gameId;
         this.gameRoundNum = gameRoundNum;
         this.dice1 = dice1;
@@ -31,8 +31,8 @@ public class ReportEntity {
         this.result = result;
     }
 
-    public long getPlayerId() {
-        return playerId;
+    public User getUser() {
+        return user;
     }
 
     public long getGameId() {

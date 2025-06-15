@@ -14,8 +14,8 @@ import java.util.List;
 
 public interface ReportRepository {
 
-    int saveReport(ReportEntity report); // 게임 턴당 기록을 저장하는 메서드
+    boolean saveReport(ReportEntity report); // 게임 턴당 기록을 저장하는 메서드
 
-    List<ReportEntity> getReports(Account account); // 특정 Player의 기록 조회를 위한 메서드
+    List<ReportEntity> getReports(User user); // 특정 Player의 기록 조회를 위한 메서드
 
 }
