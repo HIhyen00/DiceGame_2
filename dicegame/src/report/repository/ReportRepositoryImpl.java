@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ReportRepositoryImpl implements ReportRepository {
 
     private static ReportRepositoryImpl instance;
-    private static final Map<Long, List<ReportEntity>> reportMap = new HashMap<>();
+    private static final Map<User, List<ReportEntity>> reportMap = new HashMap<>();
 
     private ReportRepositoryImpl() {}
     public static ReportRepositoryImpl getInstance() {
@@ -24,25 +24,24 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     // 게임 턴당 기록을 저장하는 메서드
     @Override
-    public int saveReport(ReportEntity report) {
-        long playerId = report.getPlayerId();
+    public boolean saveReport(ReportEntity report) {
+        User user = report.getUser();
 
         // 기존 기록이 없는 경우 새 리스트 생성
-        List<ReportEntity> reportList = reportMap.get(playerId);
+        List<ReportEntity> reportList = reportMap.get(user);
         if(reportList == null) {
             reportList = new ArrayList<>();
-            reportMap.put(playerId, reportList);
+            reportMap.put(user, reportList);
         }
 
-        // 현재 기록 추가
         reportList.add(report);
-        return 0;
+        return true;
     }
 
     // 특정 Player의 기록 조회를 위한 메서드
     @Override
-    public List<ReportEntity> getReports(Account account) {
-        long accountId = account.getId();
+    public List<ReportEntity> getReports(User user) {
+        long accountId = user.getId();
         List<ReportEntity> reports;
         if (reportMap.containsKey(accountId)) {
             reports = reportMap.get(accountId);
