@@ -1,11 +1,10 @@
 package dice.service;
 
-import account.entity.Account;
 import dice.entity.Dice;
 import dice.entity.SkillDice;
 import dice.repository.DiceRepository;
 import dice.repository.DiceRepositoryImpl;
-import util.DiceGenerator;
+import dice.utility.DiceGenerator;
 
 public class DiceServiceImpl implements DiceService {
     private static DiceServiceImpl instance;

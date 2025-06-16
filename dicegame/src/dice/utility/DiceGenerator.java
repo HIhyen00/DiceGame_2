@@ -1,4 +1,4 @@
-package util;
+package dice.utility;
 
 import java.util.Random;
 

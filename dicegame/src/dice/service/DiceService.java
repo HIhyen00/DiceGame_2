@@ -1,6 +1,5 @@
 package dice.service;
 
-import account.entity.Account;
 import dice.entity.Dice;
 
 public interface DiceService {
