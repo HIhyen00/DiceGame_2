@@ -1,19 +1,29 @@
 import account.entity.User;
+import account.repository.UserRepository;
 import account.repository.UserRepositoryImpl;
-import account.service.AccountService;
 import account.service.UserService;
+import account.service.UserServiceImpl;
+import dice.entity.Dice;
 import dice.service.DiceService;
+import dice.service.DiceServiceImpl;
+import game.GameController;
+import report.repository.ReportRepository;
+import report.service.ReportService;
 import utility.KeyboardInput;
-
 import java.util.Optional;
 import java.util.Scanner;
 
 public class Home {
-    private static AccountService accountService;
+    private final UserService userService = UserServiceImpl.getInstance();
+    private static UserRepository userRepository = UserRepositoryImpl.getInstance();
     private static DiceService diceService;
+    private static GameController gameController;
+    private static ReportRepository reportRepository;
+    private static ReportService reportService;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        Home home = new Home();
 
         while (true) {
             System.out.println("==== DiceGame에 오신 걸 환영합니다🎉 ====");
@@ -29,13 +39,13 @@ public class Home {
 
                 switch (choice) {
                     case 1:
-                        Home.registerPage();
+                        home.registerPage();
                         break;
                     case 2:
-                        Home.myPage();
+                        home.myPage();
                         break;
                     case 3:
-                        Home.gamePage();
+                        home.gamePage();
                         break;
                     case 0:
                         System.exit(0);
@@ -47,17 +57,20 @@ public class Home {
                 System.out.println("숫자를 입력해주세요.");
             } catch (Exception e) {
                 System.out.println("오류가 발생 하였습니다.");
+                e.printStackTrace();
             }
 
         }
     }
 
     // 회원가입
-    static void registerPage() {
-        accountService.register();
+    void registerPage() {
+        userService.registerUser();
     }
+
     // 마이페이지
-    static void myPage() {
+    void myPage() {
+        Home home = new Home();
         Long loginUser = null;
         while (true) {
             System.out.println("======== MyPage📝 ========");
@@ -72,13 +85,18 @@ public class Home {
 
                 switch (choice) {
                     case 1:
-                        loginUser = Home.loginPage();
+                        long userId = home.loginPage();
+                        if (userId == -1) {
+                            System.out.println("❌ 로그인에 실패했습니다.");
+                        } else {
+                            loginUser = userId;
+                        }
                         break;
                     case 2:
                         if(loginUser == null) {
                             System.out.println("로그인 후 사용할 수 있습니다.");
                         } else {
-                            Home.retrievePage(loginUser);
+                            home.retrievePage();
                         }
                         break;
                     case 0:
@@ -91,31 +109,67 @@ public class Home {
                 System.out.println("숫자를 입력해주세요.");
             } catch (Exception e) {
                 System.out.println("오류가 발생 하였습니다.");
+                e.printStackTrace();
             }
 
         }
     }
     // 게임페이지
-    static void gamePage() {
-        //diceService.play();
+    void gamePage() {
+        GameController gameController = new GameController();
+        gameController.startGame();
+//        UserService userService = UserServiceImpl.getInstance();
+//        userService.registerUser();
+//        userService.registerUser();
+//
+//        //로그인
+//        Long accountIdToken  = userService.signIn(); // 로그인 유저
+//        Long opponentId = userService.signIn();
+//
+//        // 주사위를 굴림
+//        DiceService diceService = DiceServiceImpl.getInstance();
+//        Dice playerDice = diceService.diceRoll(accountIdToken); // 로그인 유저 주사위 굴린거
+//        int playerScore = playerDice.getSum();
+//        Dice opponentDice = diceService.diceRoll(opponentId); // 로그인 안한 상대 유저 주사위 굴린거
+//        int opponentScore = opponentDice.getSum();
+//
+//        //스킬조건에 만족하면 실행
+//        int result1 = diceService.skillDIceRoll(playerDice, opponentScore);
+//        int result2 = diceService.skillDIceRoll(opponentDice, playerScore);
+//        // 상대 점수 설정!! , 상대방도 skill 주사위를 쓸 수 있음
+//        System.out.println("player1의 주사위 값 : " + result1);
+//        System.out.println("player2의 주사위 값 : " + result2);
+
     }
+
     // 로그인 페이지
-    static long loginPage() {
-        System.out.println("========== 로그인 ==========");
-        return accountService.signIn();
+     long loginPage() {
+        Optional<Long> loginUser = userService.signIn();
+        if(loginUser.isPresent()) {
+            return loginUser.get();
+        }
+        return -1;
     }
+
     // 배틀레포트 조회 페이지
-    static void retrievePage(long accountId) {
+    void retrievePage() {
+        String inputId = KeyboardInput.getStringInput("배틀 리포트를 조회할 Player의 아이디를 입력해 주세요 : ");
 
+        Optional<User> user = userRepository.findByUserId(inputId);
+        if(user.isPresent()) {
+            long id = user.get().getId();
+            reportService.userBattleReport(id);
+        }
     }
 
-    static void jb() {
-        UserRepositoryImpl userRepository = UserRepositoryImpl.getInstance();
-        UserService userService = new UserService(userRepository);
+
+    void mypage() {
+        UserRepository userRepository = UserRepositoryImpl.getInstance();
+        UserService userService = UserServiceImpl.getInstance();
 
         Scanner scanner = new Scanner(System.in); // 사용자 입력을 받을 스캐너 객체 생성
 
-        System.out.println("--- 사용자 관리 프로그램 시작 ---");
+        System.out.println("--- 마이페이지 시작 ---");
 
         while (true) { // 프로그램이 계속 실행되도록 무한 루프
             System.out.println("\n--- 메뉴 ---");
@@ -138,7 +192,7 @@ public class Home {
                     String registerNickname = scanner.nextLine();
 
                     // UserService를 통해 사용자 등록 시도
-                    User registeredUser = userService.registerUser(registerUserId, registerPassword, registerNickname);
+                    User registeredUser = userService.registerUser();
                     if (registeredUser != null) {
                         System.out.println("🎉 회원가입 성공! " + registeredUser.getNickname() + "님 환영합니다.");
                     } else {

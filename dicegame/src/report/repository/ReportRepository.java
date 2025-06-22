@@ -8,6 +8,7 @@ package report.repository;
 - 레포트 데이터를 저장할 수 있는 구조 및 포맷 설계
 - 이후 조회 기능에서 활용할 수 있도록 게임 ID별 승패 기록 저장
  */
+import account.entity.User;
 import report.entity.ReportEntity;
 
 import java.util.List;

@@ -7,6 +7,7 @@ public class Dice {
     private int secondValue;
     private long diceId; //스킬 주사위 고유 아이디
     private int sum;
+    private boolean skillUsed;
 
     public Dice(int firstValue, int secondValue) {
         this.diceId = idCounter++;
@@ -23,14 +24,17 @@ public class Dice {
 
     public int getSum() { return sum; }
 
+    public boolean getSkillUsed() {
+        if (firstValue % 2 == 0) {
+            skillUsed = true;
+        }
+        return skillUsed = false;
+    }
+
     @Override
     public String toString() {
-        return "Dice{" +
-                "주사위1=" + firstValue +
-                ", 주사위2=" + secondValue +
-                ", 주사위Id=" + diceId +
-                ", sum=" + sum +
-                '}';
+        return  "주사위1=" + firstValue +
+                "\n주사위2=" + secondValue;
     }
 }
 

@@ -1,5 +1,6 @@
 package report.repository;
 
+import account.entity.User;
 import report.entity.ReportEntity;
 
 import java.util.ArrayList;

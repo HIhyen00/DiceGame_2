@@ -22,7 +22,7 @@ public class DiceRepositoryImpl implements DiceRepository {
 
     @Override
     public int save(Dice dice) {
-        System.out.println("일반 주사위 결과를 저장하는거야? "+dice);
+        System.out.println(dice);
         int diceUniqueId = (int) dice.getId();
         diceMap.put(diceUniqueId, dice);
         return diceUniqueId;
@@ -30,7 +30,7 @@ public class DiceRepositoryImpl implements DiceRepository {
 
     @Override
     public int skillSave(SkillDice skillDice) {
-        System.out.println("스킬 주사위 결과를 저장하는거야? "+skillDice);
+        System.out.println(skillDice);
         int skillDiceUniqueId = (int) skillDice.getSkillDiceId();
         skillDiceMap.put(skillDiceUniqueId, skillDice);
         return skillDiceUniqueId;

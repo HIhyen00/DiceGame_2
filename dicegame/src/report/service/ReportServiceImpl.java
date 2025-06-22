@@ -1,5 +1,8 @@
 package report.service;
 
+import account.entity.User;
+import account.repository.UserRepository;
+import account.repository.UserRepositoryImpl;
 import report.entity.ReportEntity;
 import report.repository.ReportRepository;
 import report.repository.ReportRepositoryImpl;
@@ -11,8 +14,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReportServiceImpl implements ReportService {
+    private static ReportServiceImpl instance;
+
     private final ReportRepository reportRepository = ReportRepositoryImpl.getInstance();
-    private final UserRepository userRepository = UserRepositoryImpl.getInstance();;
+    private final UserRepository userRepository = UserRepositoryImpl.getInstance();
+
+    private ReportServiceImpl() {}
+
+    public static ReportServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new ReportServiceImpl();
+        }
+        return instance;
+    }
 
     // 게임 결과 요약
     @Override
@@ -22,7 +36,7 @@ public class ReportServiceImpl implements ReportService {
             return;
         }
 
-        System.out.println("[게임 결과 요약]");
+        System.out.println("\n[게임 결과 요약]");
 
         // 순서대로 2명씩 묶어서 출력
         for (int i = 0; i < reports.size(); i += 2) {
