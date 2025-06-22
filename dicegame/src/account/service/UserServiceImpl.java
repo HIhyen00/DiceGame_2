@@ -3,6 +3,7 @@ package account.service;
 import account.entity.User;
 import account.repository.UserRepository;
 import account.repository.UserRepositoryImpl;
+import utility.KeyboardInput;
 
 import java.util.Optional;
 
@@ -47,5 +48,29 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByUserId(String userId) {
         System.out.println("\n 사용자 ID로 조회 요청: " + userId);
         return userRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Optional<Long> signIn() {
+        int attempt = 1;
+        while(attempt < 3) {
+            System.out.println("========== 로그인 ==========");
+            String userId = KeyboardInput.getStringInput("ID: ");
+            String password = KeyboardInput.getStringInput("비밀번호: ");
+
+            Optional<User> maybeUser = userRepository.findByUserId(userId);
+
+            if(maybeUser.isPresent()) {
+                User user = maybeUser.get();
+                if(user.getPassword().equals(password)) {
+                    System.out.println("🎉 로그인 성공! " + user.getNickname() + "님 환영합니다.");
+                    return Optional.of(user.getId());
+                }
+            }
+            System.out.println("❌ 틀렸습니다. 다시 입력해주세요.");
+            attempt++;
+        }
+//        System.out.println("❌ 로그인에 실패하였습니다.");
+        return Optional.empty();
     }
 }
