@@ -9,6 +9,7 @@ import dice.service.DiceServiceImpl;
 import game.GameController;
 import report.repository.ReportRepository;
 import report.service.ReportService;
+import report.service.ReportServiceImpl;
 import utility.KeyboardInput;
 import java.util.Optional;
 import java.util.Scanner;
@@ -16,10 +17,11 @@ import java.util.Scanner;
 public class Home {
     private final UserService userService = UserServiceImpl.getInstance();
     private static UserRepository userRepository = UserRepositoryImpl.getInstance();
+    private static ReportService reportService = ReportServiceImpl.getInstance();
     private static DiceService diceService;
     private static GameController gameController;
     private static ReportRepository reportRepository;
-    private static ReportService reportService;
+//    private static ReportService reportService;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
